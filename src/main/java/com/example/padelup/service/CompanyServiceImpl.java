@@ -46,12 +46,12 @@ public class CompanyServiceImpl implements CompanyService {
    }
 
    @Override
-//   @Transactional(readOnly = true)
+   @Transactional(readOnly = true)
    public CompanyDto findById(Integer companyId) {
          Optional<Company> foundCompany = companyRepo.findById(companyId);
          Company company = foundCompany.orElseThrow(()
                  -> new IllegalArgumentException ("Could not find Company by Id " + companyId));
-         return modelMapper.map(foundCompany, CompanyDto.class);
+         return modelMapper.map(company, CompanyDto.class);
       }
 
 

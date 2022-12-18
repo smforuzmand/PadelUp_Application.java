@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PlayerServiceImpl implements PlayerService{
@@ -43,13 +44,16 @@ public class PlayerServiceImpl implements PlayerService{
    }
 
    @Override
-   @Transactional
-   public PlayerDto findById(Integer id) {
-      return null;
+   @Transactional(readOnly = true)
+   public PlayerDto findById(Integer playerId) {
+      Optional<Player> foundPlayer = playerRepo.findById(playerId);
+      Player player = foundPlayer.orElseThrow(()
+              -> new IllegalArgumentException ("Could not find Company by Id " + playerId));
+      return modelMapper.map(player, PlayerDto.class);
    }
 
    @Override
-   @Transactional
+   @Transactional(readOnly = true)
    public List<PlayerDto> findAll() {
       return null;
    }

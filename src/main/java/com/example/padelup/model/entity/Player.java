@@ -27,7 +27,7 @@ public class Player {
    @Column(name = "last_name")
    private String playerLastName;
    @Column(name = "player_email")
-   private String playerEnail;
+   private String playerEmail;
    @Column(name = "rounds")
    private int rounds;
    @Column(name = "player_average")
@@ -36,5 +36,4 @@ public class Player {
    @ManyToOne( cascade  = {PERSIST, MERGE, DETACH, REFRESH})
    @JoinColumn(name = "company_id")
    private Company company;
-
 }

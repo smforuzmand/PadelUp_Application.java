@@ -21,10 +21,6 @@ public class Company {
    @OneToMany(mappedBy = "company", cascade = {MERGE, REFRESH, DETACH}, fetch = LAZY)
    private List<Player> playerList;
 
-//   @OneToOne(cascade = CascadeType.ALL)
-//   @JoinColumn(name = "admin_id")
-//   private Admin admin;
-
    public Company(){
    }
    public Company(int id, String companyName, double companyScore, List<Player> playerList) {

@@ -17,8 +17,8 @@ import java.util.List;
 @EqualsAndHashCode
 
 public class CompanyDto {
-//   @NotBlank(message = "This field is required")
-//   @Size(min = 3, message = "Need to contain at least 3 letters")
+   @NotBlank(message = "This field is required")
+   @Size(min = 3, message = "Need to contain at least 3 letters")
    private String companyName;
 
    private  double companyScore;

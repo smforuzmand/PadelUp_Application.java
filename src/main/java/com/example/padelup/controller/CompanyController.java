@@ -29,10 +29,10 @@ public class CompanyController {
       return ResponseEntity.status(HttpStatus.CREATED).body(companyService.create(companyForm));
    }
    @DeleteMapping(path = "/{id}")
-   public ResponseEntity<String> deleteCompany(@PathVariable("id") Integer rId) {
+   public ResponseEntity<String> deleteCompany(@PathVariable("id") Integer cId) {
 
-      boolean delete = companyService.delete(rId);
-      return ResponseEntity.ok(delete ? "Company with id " + rId + " was deleted" : "Company Not Deleted");
+      boolean delete = companyService.delete(cId);
+      return ResponseEntity.ok(delete ? "Company with id " + cId + " was deleted" : "Company Not Deleted");
    }
    @GetMapping("/{id}")
    public ResponseEntity<CompanyDto> findById(@PathVariable("id") Integer id){

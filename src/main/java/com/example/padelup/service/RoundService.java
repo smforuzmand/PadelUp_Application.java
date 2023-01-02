@@ -1,15 +1,15 @@
 package com.example.padelup.service;
 
-import com.example.padelup.model.dto.RoundDto;
+import com.example.padelup.entity.Round;
 
 import java.util.List;
 
 public interface RoundService {
-   RoundDto create (RoundDto roundDto);
+   Round create (final Round Round);
 
-   boolean delete(Integer id);
-   RoundDto update(Integer id, RoundDto roundDto);
-   RoundDto findById(Integer id);
-   List<RoundDto> findAll();
+   void delete(final Integer id);
+   Round update(final Integer id, final Round Round);
+   Round findById(final Integer id);
+   List<Round> findAll();
 
 }

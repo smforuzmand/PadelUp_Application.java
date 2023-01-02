@@ -1,11 +1,18 @@
 package com.example.padelup.controller;
 
-import com.example.padelup.model.dto.RoundDto;
+import com.example.padelup.controller.beans.ResultResp;
+import com.example.padelup.entity.Round;
 import com.example.padelup.service.RoundService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -13,28 +20,37 @@ import java.util.List;
 @RequestMapping(path="/api/v1/round")
 public class RoundController {
    private final RoundService roundService;
-   @Autowired
+
    public RoundController(RoundService roundService){
       this.roundService = roundService;
    }
 
    @PostMapping
-   public ResponseEntity<RoundDto> create(@RequestBody RoundDto roundDto) {
-      return ResponseEntity.status(HttpStatus.CREATED).body(roundService.create(roundDto));
+   public ResponseEntity<Round> create(@RequestBody final Round round) {
+      return ResponseEntity.status(HttpStatus.CREATED).body(roundService.create(round));
    }
-   @DeleteMapping(path = "/{id}")
-   public ResponseEntity<String> deleteRound(@PathVariable("id") Integer pId) {
 
-      boolean delete = roundService.delete(pId);
-      return ResponseEntity.ok(delete ? "Round yer with id " + pId + " was deleted" : "Round Not Deleted");
+   @PutMapping(path = "/{id}")
+   public ResponseEntity<Round> update(@PathVariable("id") final Integer rId,
+                                       @RequestBody final Round round) {
+      return ResponseEntity.status(HttpStatus.CREATED).body(roundService.update(rId, round));
+   }
+
+   @DeleteMapping(path = "/{id}")
+   public ResponseEntity<ResultResp> deleteRound(@PathVariable("id") final Integer rId) {
+
+      roundService.delete(rId);
+      final ResultResp result = new ResultResp("Round deleted!");
+      return ResponseEntity.ok(result);
+
    }
    @GetMapping("/{id}")
-   public ResponseEntity<RoundDto> findById(@PathVariable("id") Integer id){
+   public ResponseEntity<Round> findById(@PathVariable("id") final Integer id){
       return ResponseEntity.ok(roundService.findById(id));
    }
 
    @GetMapping
-   public ResponseEntity<List<RoundDto>> findAll(){
+   public ResponseEntity<List<Round>> findAll(){
       return ResponseEntity.ok(roundService.findAll());
    }
 

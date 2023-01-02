@@ -1,17 +1,15 @@
 package com.example.padelup.service;
 
-import com.example.padelup.model.dto.CompanyDto;
-import com.example.padelup.model.dto.PlayerDto;
-import com.example.padelup.model.form.CompanyForm;
+import com.example.padelup.entity.Player;
 
 import java.util.List;
 
 public interface PlayerService {
-   PlayerDto create (PlayerDto playerDto);
+   Player create (final Player player);
 
-   boolean delete(Integer id);
-   PlayerDto update(Integer id, PlayerDto playerDto);
-   PlayerDto findById(Integer id);
-   List<PlayerDto> findAll();
+   void delete(final Integer id);
+   Player update(final Integer id, final Player Player);
+   Player findById(final Integer id);
+   List<Player> findAll();
 
 }

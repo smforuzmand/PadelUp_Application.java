@@ -1,16 +1,19 @@
 package com.example.padelup.service;
 
-import com.example.padelup.model.dto.CompanyDto;
-import com.example.padelup.model.form.CompanyForm;
+import com.example.padelup.entity.Company;
+import io.vavr.Tuple2;
 
 import java.util.List;
 
 public interface CompanyService {
-   CompanyDto create (CompanyForm form);
+   Company create (final Company company);
 
-   boolean delete(Integer id);
-   CompanyDto update(Integer id, CompanyForm updateForm);
-   CompanyDto findById(Integer id);
-   List<CompanyDto> findAll();
+   void delete(final Integer id);
+   Company update(final Integer id, final Company company);
+   Company findById(final Integer id);
+   List<Company> findAll();
 
+   Tuple2<Company, Double> getPoints(final Integer id);
+
+   List<Tuple2<Company, Double>> getAllCompaniesScores();
 }

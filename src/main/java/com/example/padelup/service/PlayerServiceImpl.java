@@ -1,60 +1,57 @@
 package com.example.padelup.service;
 
-import com.example.padelup.model.dto.CompanyDto;
-import com.example.padelup.model.dto.PlayerDto;
-import com.example.padelup.model.entity.Company;
-import com.example.padelup.model.entity.Player;
-import com.example.padelup.repo.CompanyRepo;
+import com.example.padelup.entity.Player;
+import com.example.padelup.exception.EntityNotFoundException;
 import com.example.padelup.repo.PlayerRepo;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.vavr.control.Try;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class PlayerServiceImpl implements PlayerService{
-   private final ModelMapper modelMapper;
-   private final PlayerRepo playerRepo;
-   @Autowired
-   public PlayerServiceImpl(PlayerRepo playerRepo, ModelMapper modelMapper){
-      this.modelMapper = modelMapper;
-      this.playerRepo = playerRepo;
-   }
-   @Override
-   @Transactional
-   public PlayerDto create(PlayerDto playerDto) {
-      Player player = modelMapper.map(playerDto,Player.class);
-      Player savedPlayer = playerRepo.save(player);
-      return modelMapper.map(savedPlayer, PlayerDto.class);
-   }
+public class PlayerServiceImpl implements PlayerService {
+    private final PlayerRepo playerRepo;
 
-   @Override
-   @Transactional
-   public boolean delete(Integer id) {
-      return false;
-   }
+    public PlayerServiceImpl(final PlayerRepo playerRepo) {
+        this.playerRepo = playerRepo;
+    }
 
-   @Override
-   @Transactional
-   public PlayerDto update(Integer id, PlayerDto playerDto) {
-      return null;
-   }
+    @Override
+    @Transactional
+    public Player create(final Player player) {
+        return playerRepo.save(player);
+    }
 
-   @Override
-   @Transactional(readOnly = true)
-   public PlayerDto findById(Integer playerId) {
-      Optional<Player> foundPlayer = playerRepo.findById(playerId);
-      Player player = foundPlayer.orElseThrow(()
-              -> new IllegalArgumentException ("Could not find Company by Id " + playerId));
-      return modelMapper.map(player, PlayerDto.class);
-   }
+    @Override
+    @Transactional
+    public void delete(final Integer id) {
+        playerRepo.deleteById(id);
+    }
 
-   @Override
-   @Transactional(readOnly = true)
-   public List<PlayerDto> findAll() {
-      return null;
-   }
+    @Override
+    @Transactional
+    public Player update(final Integer id, final Player player) {
+        return playerRepo.findById(id)
+                .map(dbPlayer -> {
+                    dbPlayer.setFirstName(player.getFirstName());
+                    dbPlayer.setLastName(player.getLastName());
+                    dbPlayer.setEmail(player.getEmail());
+                    return playerRepo.save(dbPlayer);
+                })
+                .orElseThrow(() -> new EntityNotFoundException(Player.class, "id", String.valueOf(player.getId())));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Player findById(Integer playerId) {
+        return playerRepo.findById(playerId)
+                .orElseThrow(() -> new EntityNotFoundException(Player.class, "id", playerId.toString()));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Player> findAll() {
+        return playerRepo.findAll();
+    }
 }
